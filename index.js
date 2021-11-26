@@ -4,9 +4,12 @@ const PORT = 3000;
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, {
-        "Content-Type": "text/plain",
+        "Content-Type": "application/json",
     });
-    res.end("Hello World!");
+    res.end(JSON.stringify({
+        name: "Mohammed Taha",
+        age: "21",
+    }));
 })
 
 server.listen(PORT, () => {
