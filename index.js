@@ -2,19 +2,44 @@ const http = require("http");
 
 const PORT = 3000;
 
-const server = http.createServer((req, res) => {
-    if (req.url === "/friends") {
+//created a friends array
+const friends = [{
+        id: 1,
+        name: "Ahmed",
 
-        // res.writeHead(200, {
-        //     "Content-Type": "application/json",
-        // });
+    },
+    {
+        id: 2,
+        name: "Ali",
+    },
+    {
+        id: 3,
+        name: "Sara",
+    }
+]
+
+
+const server = http.createServer((req, res) => {
+
+    //fetches the url thzt the user typed in and we will be parsing later
+    const items = req.url.split("/");
+
+    //loop checks if the url is equal to the friends array
+    if (items[1] === "friends") {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify({
-            name: "Mohammed Taha",
-            age: "21",
-        }));
-    } else if (req.url === "/messages") {
+
+        //if the url has 3 items, it means we are looking for a specific friend
+        if (items.length === 3) {
+            //from the typed url, we are converting the string index to a number
+            const friendIndex = Number(items[2]);
+
+            //we are printing the entire friends object from its index position
+            res.end(JSON.stringify(friends[friendIndex]));
+        } else {
+            res.end(JSON.stringify(friends));
+        }
+    } else if (items[1] === "messages") {
         res.setHeader("Content-Type", "text/html");
         res.write("<html>")
         res.write("<body>")
