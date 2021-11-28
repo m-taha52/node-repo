@@ -21,6 +21,32 @@ const friends = [{
     }
 ]
 
+app.use((req, res, next) => {
+    const start = Date.now()
+    next()
+    const ms = Date.now() - start
+    console.log(`${req.method} ${req.url} ${ms}ms`)
+})
+
+app.use(express.json())
+
+app.post(
+    "/friends",
+    (req, res) => {
+        if (!req.body.name) {
+            return res.status(400).json({
+                error: "name is required"
+            })
+        }
+        const newFriend = {
+            name: req.body.name,
+            id: friends.length
+        }
+
+        friends.push(newFriend);
+        res.json(newFriend);
+
+    })
 app.listen(PORT, () => {
     console.log(`Listening on ${PORT}`)
 })
